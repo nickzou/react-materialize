@@ -49,7 +49,7 @@ const Button = ({
     return (
       <div
         {...props}
-        ref={_fab.current}
+        ref={_fab}
         className={cx('fixed-action-btn', {
           toolbar: fab.toolbarEnabled
         })}
