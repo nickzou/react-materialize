@@ -1,15 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import Breadcrumb from '../src/Breadcrumb';
 
 describe('<Breadcrumb />', () => {
   test('renders', () => {
-    const wrapper = (
+    const { container } = render(
       <Breadcrumb cols={6} className="blue">
         <a href="#">Home</a>
         <a href="#">Login</a>
       </Breadcrumb>
     );
-    expect(shallow(wrapper)).toMatchSnapshot();
+
+    expect(container).toMatchSnapshot();
   });
 });
