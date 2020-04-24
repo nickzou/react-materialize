@@ -1,18 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Autocomplete /> renders 1`] = `
-<div
-  className="input-field col"
->
-  <input
-    className="autocomplete"
-    id="testAutocompleteId"
-    type="text"
-  />
-  <label
-    htmlFor="testAutocompleteId"
+exports[`<Autocomplete /> handles layout classes 1`] = `
+<div>
+  <div
+    class="input-field col s4 m6"
   >
-    Test Title
-  </label>
+    <input
+      class="autocomplete"
+      id="Autocomplete-mockId"
+      type="text"
+    />
+    <label
+      for="Autocomplete-mockId"
+    />
+  </div>
+</div>
+`;
+
+exports[`<Autocomplete /> renders 1`] = `
+<div>
+  <div
+    class="input-field col"
+  >
+    <input
+      class="autocomplete"
+      id="testAutocompleteId"
+      type="text"
+    />
+    <label
+      for="testAutocompleteId"
+    >
+      Test Title
+    </label>
+  </div>
 </div>
 `;

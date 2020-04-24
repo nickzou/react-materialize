@@ -1,4 +1,5 @@
 import React from 'react';
+import { render } from '@testing-library/react';
 import { shallow, mount } from 'enzyme';
 import Autocomplete from '../src/Autocomplete';
 import mocker from './helper/new-mocker';
@@ -20,51 +21,47 @@ describe('<Autocomplete />', () => {
   });
 
   test('renders', () => {
-    wrapper = shallow(
+    const { container } = render(
       <Autocomplete title="Test Title" id={componentId} options={{ data }} />
     );
-    expect(wrapper).toMatchSnapshot();
+
+    expect(container).toMatchSnapshot();
   });
 
   test('handles layout classes', () => {
-    wrapper = shallow(<Autocomplete s={4} m={6} />);
-    expect(wrapper.hasClass('input-field')).toBeTruthy();
-    expect(wrapper.hasClass('col')).toBeTruthy();
-    expect(wrapper.hasClass('s4')).toBeTruthy();
-    expect(wrapper.hasClass('m6')).toBeTruthy();
+    const { container } = render(<Autocomplete s={4} m={6} />);
+
+    expect(container).toMatchSnapshot();
   });
 
   test('renders placeholder', () => {
-    wrapper = shallow(<Autocomplete placeholder="Name" />);
-    expect(wrapper.find('input').prop('placeholder')).toEqual('Name');
+    const { getByPlaceholderText } = render(
+      <Autocomplete placeholder="Name" />
+    );
+
+    expect(getByPlaceholderText('Name')).toBeTruthy();
   });
 
   describe('initialises', () => {
     const autocompleteInstanceDestroyMock = jest.fn();
     const autocompleteMock = {
-      init: (el, options) => {
+      init: (_, options) => {
         autocompleteInitMock(options);
         return {
           destroy: autocompleteInstanceDestroyMock
         };
       }
     };
-    const restore = mocker('Autocomplete', autocompleteMock);
+
+    mocker('Autocomplete', autocompleteMock);
+
     beforeEach(() => {
       autocompleteInitMock.mockClear();
       autocompleteInstanceDestroyMock.mockClear();
     });
 
     test('calls Autocomplete', () => {
-      mount(<Autocomplete />);
-      expect(autocompleteInitMock).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('with new data', () => {
-    test('reinitializes', () => {
-      const wrapper = mount(<Autocomplete />);
-
+      render(<Autocomplete />);
       expect(autocompleteInitMock).lastCalledWith({
         data: {},
         limit: Infinity,
@@ -72,14 +69,14 @@ describe('<Autocomplete />', () => {
         onAutocomplete: null,
         sortFunction: null
       });
+    });
+  });
 
-      wrapper.setProps({
-        options: {
-          data: {
-            foo: 'bar'
-          }
-        }
-      });
+  describe('with new data', () => {
+    test('reinitializes', () => {
+      const { rerender } = render(<Autocomplete />);
+
+      rerender(<Autocomplete options={{ data: { foo: 'bar' } }} />);
 
       expect(autocompleteInitMock).lastCalledWith({
         data: {
