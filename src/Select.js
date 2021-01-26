@@ -3,7 +3,8 @@ import React, {
   cloneElement,
   useRef,
   useEffect,
-  useState
+  useState,
+  createRef
 } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
@@ -11,7 +12,7 @@ import idgen from './idgen';
 import constants from './constants';
 import { dropdownOptions } from './Dropdown';
 
-const Select = ({
+const Select = React.createRef(({
   id,
   s,
   m,
@@ -31,9 +32,9 @@ const Select = ({
   value,
   onChange,
   ...props
-}) => {
+}, ref) => {
   const [selectedValue, setSelectedValue] = useState(value);
-  const _selectRef = useRef(null);
+  const _selectRef = ref || createRef(null);
   const _formSelectInstance = useRef(null);
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const Select = ({
       )}
     </div>
   );
-};
+});
 
 Select.propTypes = {
   /**
